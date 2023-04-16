@@ -28,9 +28,9 @@ export default async function (req, res) {
 
   try {
     // Fetch the transcript from the fetch_transcript endpoint
-    const transcriptResponse = await fetch(
-      'http://localhost:3000/api/fetch_transcript'
-    )
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+    const transcriptResponse = await fetch(`${apiUrl}/api/fetch_transcript`)
+
     const transcriptData = await transcriptResponse.json()
 
     const transcript = transcriptData.transcript
@@ -104,7 +104,7 @@ export default async function (req, res) {
       console.error(error.response.status, error.response.data)
       res.status(error.response.status).json(error.response.data)
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`)
+      console.error(`${error.message}`)
       res.status(500).json({
         error: {
           message: 'An error occurred during your request.',
