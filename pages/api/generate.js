@@ -29,6 +29,7 @@ export default async function (req, res) {
   try {
     // Fetch the transcript from the fetch_transcript endpoint
     const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+
     const transcriptResponse = await fetch(`${apiUrl}/api/fetch_transcript`)
 
     const transcriptData = await transcriptResponse.json()
