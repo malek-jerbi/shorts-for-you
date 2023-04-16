@@ -35,68 +35,69 @@ export default async function (req, res) {
 
     const transcript = transcriptData.transcript
 
-    //console.log(transcript)
+    // //console.log(transcript)
 
-    // Break the transcript into smaller chunks
-    const maxTranscriptLength = 4000 - topic.length - 100
-    const transcriptChunks = splitTranscript(transcript, maxTranscriptLength)
+    // // Break the transcript into smaller chunks
+    // const maxTranscriptLength = 4000 - topic.length - 100
+    // const transcriptChunks = splitTranscript(transcript, maxTranscriptLength)
 
-    let results = []
+    // let results = []
 
-    for (const chunk of transcriptChunks) {
-      const completion = await openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: generateMessages(topic, chunk),
-        temperature: 0.6,
-      })
+    // for (const chunk of transcriptChunks) {
+    //   const completion = await openai.createChatCompletion({
+    //     model: 'gpt-3.5-turbo',
+    //     messages: generateMessages(topic, chunk),
+    //     temperature: 0.6,
+    //   })
 
-      console.log('Completion:', completion.data.choices[0].message.content)
+    //   console.log('Completion:', completion.data.choices[0].message.content)
 
-      results.push(completion.data.choices[0].message.content)
-    }
+    //   results.push(completion.data.choices[0].message.content)
+    // }
 
-    // Combine the results from each chunk
-    const combinedResults = results.join('\n')
+    // // Combine the results from each chunk
+    // const combinedResults = results.join('\n')
 
-    console.log('Combined results:', combinedResults)
+    // console.log('Combined results:', combinedResults)
 
-    const finalMaxTranscriptLength = 4000 - topic.length - 100
-    const finalTranscriptChunks = splitTranscript(
-      combinedResults,
-      finalMaxTranscriptLength
-    )
+    // const finalMaxTranscriptLength = 4000 - topic.length - 100
+    // const finalTranscriptChunks = splitTranscript(
+    //   combinedResults,
+    //   finalMaxTranscriptLength
+    // )
 
-    let finalResults = []
-    for (const chunk of finalTranscriptChunks) {
-      const completion = await openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: generateFinalMessages(topic, chunk),
-        temperature: 0.6,
-      })
+    // let finalResults = []
+    // for (const chunk of finalTranscriptChunks) {
+    //   const completion = await openai.createChatCompletion({
+    //     model: 'gpt-3.5-turbo',
+    //     messages: generateFinalMessages(topic, chunk),
+    //     temperature: 0.6,
+    //   })
 
-      console.log(
-        'Final Completion:',
-        completion.data.choices[0].message.content
-      )
+    //   console.log(
+    //     'Final Completion:',
+    //     completion.data.choices[0].message.content
+    //   )
 
-      finalResults.push(completion.data.choices[0].message.content)
-    }
-    console.log('Final Results:', finalResults)
+    //   finalResults.push(completion.data.choices[0].message.content)
+    // }
+    // console.log('Final Results:', finalResults)
 
-    console.log('Final Combined Results:', finalResults.join('\n'))
+    // console.log('Final Combined Results:', finalResults.join('\n'))
 
-    const finalCombinedResults = finalResults.join('\n')
+    // const finalCombinedResults = finalResults.join('\n')
 
-    const timestamped = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      messages: generateTimeStamps(finalCombinedResults),
-      temperature: 0.6,
-    })
+    // const timestamped = await openai.createChatCompletion({
+    //   model: 'gpt-3.5-turbo',
+    //   messages: generateTimeStamps(finalCombinedResults),
+    //   temperature: 0.6,
+    // })
 
-    console.log('Timestamped:', timestamped.data.choices[0].message.content)
+    // console.log('Timestamped:', timestamped.data.choices[0].message.content)
 
-    const jsonObject = JSON.parse(timestamped.data.choices[0].message.content)
-    res.status(200).json({ result: jsonObject })
+    // const jsonObject = JSON.parse(timestamped.data.choices[0].message.content)
+    // res.status(200).json({ result: jsonObject })
+    res.status(200).json({ result: [{ start: 2564.28, end: 2577.6 }] })
   } catch (error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
