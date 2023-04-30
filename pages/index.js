@@ -79,7 +79,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h3>Find podcast content</h3>
+        <h3>
+          Generate shorts(currently just selected video clips) for your video
+        </h3>
         <form onSubmit={onSubmit}>
           <input
             type='text'
