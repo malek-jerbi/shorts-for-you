@@ -60,7 +60,7 @@ export default async function (req, res) {
 
     const completion = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
-      messages: generateMessages(transcriptChunks[1]), //for now, we'll use only the second chunk
+      messages: generateMessages(transcriptChunks[0]), //for now, we'll use only the second chunk
       temperature: 0.6,
     })
 
