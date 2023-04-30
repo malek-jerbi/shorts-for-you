@@ -2,20 +2,33 @@ import Head from 'next/head'
 import { useState } from 'react'
 import styles from './index.module.css'
 
+function extractVideoId(url) {
+  const regex =
+    /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?(?=.*v=([a-zA-Z0-9_-]+))(?:\S+)?|#\S+)|(?:youtu\.be\/([a-zA-Z0-9_-]+)))$/
+  const match = url.match(regex)
+  return match ? match[1] || match[2] : null
+}
+
 export default function Home() {
-  const [topicInput, setTopicInput] = useState('')
+  const [videoLinkInput, setVideoLinkInput] = useState('')
   const [result, setResult] = useState()
   const [sections, setSections] = useState(null)
 
   async function onSubmit(event) {
     event.preventDefault()
+    const videoId = extractVideoId(videoLinkInput)
+    if (!videoId) {
+      alert('Please enter a valid YouTube video link.')
+      return
+    }
+
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ topic: topicInput }),
+        body: JSON.stringify({ videoId: videoId }),
       })
 
       let data = await response.json()
@@ -33,7 +46,7 @@ export default function Home() {
 
       setResult(data.result)
       setSections(roundedSections)
-      setTopicInput('')
+      setVideoLinkInput('')
     } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error)
@@ -48,7 +61,7 @@ export default function Home() {
           <div key={index} className={styles.videoWrapper}>
             <iframe
               className={styles.video}
-              src={`https://www.youtube.com/embed/GvX-heRWFfA?start=${section.start}&end=${section.end}`}
+              src={`https://www.youtube.com/embed/3qHkcs3kG44?start=${section.start}&end=${section.end}`}
               title={`YouTube video player - Section ${index + 1}`}
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen
@@ -70,10 +83,10 @@ export default function Home() {
         <form onSubmit={onSubmit}>
           <input
             type='text'
-            name='topic'
-            placeholder='Enter a topic'
-            value={topicInput}
-            onChange={(e) => setTopicInput(e.target.value)}
+            name='videoLink'
+            placeholder='Enter a YouTube video link'
+            value={videoLinkInput}
+            onChange={(e) => setVideoLinkInput(e.target.value)}
           />
           <input type='submit' value='Search transcript' />
         </form>
