@@ -46,21 +46,9 @@ export default async function (req, res) {
 
     let results = []
 
-    // for (const chunk of transcriptChunks) {
-    //   const completion = await openai.createChatCompletion({
-    //     model: 'gpt-3.5-turbo',
-    //     messages: generateMessages(topic, chunk),
-    //     temperature: 0.6,
-    //   })
-
-    //   console.log('Completion:', completion.data.choices[0].message.content)
-
-    //   results.push(completion.data.choices[0].message.content)
-    // }
-
     const completion = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
-      messages: generateMessages(transcriptChunks[0]), //for now, we'll use only the second chunk
+      messages: generateMessages(transcriptChunks[0]), //for now, we'll use only the first chunk
       temperature: 0.6,
     })
 
@@ -82,20 +70,6 @@ export default async function (req, res) {
     console.log('Timestamped:', timestamped.data.choices[0].message.content)
 
     const jsonObject = JSON.parse(timestamped.data.choices[0].message.content)
-
-    //const mergedSnippets = []
-
-    // jsonObject.forEach(({ start, end }) => {
-    //   const lastSnippet = mergedSnippets[mergedSnippets.length - 1]
-
-    //   if (lastSnippet && start - lastSnippet.end <= 10) {
-    //     lastSnippet.end = end
-    //   } else {
-    //     mergedSnippets.push({ start, end })
-    //   }
-    // })
-
-    //console.log('Merged Snippets:', mergedSnippets)
 
     const filteredJsonObject = jsonObject.filter(({ start, end }) => {
       return end - start >= 15

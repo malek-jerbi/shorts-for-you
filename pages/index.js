@@ -10,12 +10,16 @@ function extractVideoId(url) {
 }
 
 export default function Home() {
-  const [videoLinkInput, setVideoLinkInput] = useState('')
+  const [videoLinkInput, setVideoLinkInput] = useState(
+    'https://www.youtube.com/watch?v=3qHkcs3kG44'
+  )
   const [result, setResult] = useState()
   const [sections, setSections] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   async function onSubmit(event) {
     event.preventDefault()
+    setIsLoading(true)
     const videoId = extractVideoId(videoLinkInput)
     if (!videoId) {
       alert('Please enter a valid YouTube video link.')
@@ -47,10 +51,11 @@ export default function Home() {
       setResult(data.result)
       setSections(roundedSections)
       setVideoLinkInput('')
+      setIsLoading(false)
     } catch (error) {
-      // Consider implementing your own error handling logic here
       console.error(error)
       alert(error.message)
+      setIsLoading(false)
     }
   }
 
@@ -75,13 +80,11 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Podcast Transcript Search</title>
+        <title>Shorts for you</title>
       </Head>
 
       <main className={styles.main}>
-        <h3>
-          Generate shorts(currently just selected video clips) for your video
-        </h3>
+        <h3>Generate shorts for your youtube video</h3>
         <form onSubmit={onSubmit}>
           <input
             type='text'
@@ -92,7 +95,23 @@ export default function Home() {
           />
           <input type='submit' value='Search transcript' />
         </form>
+        <p className={styles.info}>
+          Note: Temporarily, this will work only on the first 2-3 minutes of the
+          video.
+        </p>
+        <p className={styles.info}>
+          The generated videos are not in a shorts format, they are just clips
+          with the start to end selected.
+        </p>
         <div className={styles.result}>{JSON.stringify(result)}</div>
+        {isLoading && (
+          <div className={styles.loadingContainer}>
+            <div className={styles.loading}></div>
+            <span className={styles.loadingText}>
+              Transcribing and retrieving...
+            </span>
+          </div>
+        )}
 
         {sections && <VideoClips sections={sections} />}
       </main>

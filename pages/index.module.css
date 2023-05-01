@@ -71,6 +71,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  max-width: 500px; /* Set a maximum width for the container */
+  margin: 0 auto; /* Center the container horizontally */
 }
 
 .videoWrapper {
@@ -86,4 +88,40 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.loading {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.info {
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #8e8ea0;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingText {
+  margin-left: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #353740;
 }
