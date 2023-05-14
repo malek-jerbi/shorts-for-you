@@ -16,6 +16,7 @@ export default function Home() {
   const [result, setResult] = useState()
   const [sections, setSections] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [videoId, setVideoId] = useState(null)
 
   async function onSubmit(event) {
     event.preventDefault()
@@ -25,6 +26,7 @@ export default function Home() {
       alert('Please enter a valid YouTube video link.')
       return
     }
+    setVideoId(videoId)
 
     try {
       const response = await fetch('/api/generate', {
@@ -59,14 +61,14 @@ export default function Home() {
     }
   }
 
-  function VideoClips({ sections }) {
+  function VideoClips({ videoId, sections }) {
     return (
       <div className={styles.videoContainer}>
         {sections.map((section, index) => (
           <div key={index} className={styles.videoWrapper}>
             <iframe
               className={styles.video}
-              src={`https://www.youtube.com/embed/3qHkcs3kG44?start=${section.start}&end=${section.end}`}
+              src={`https://www.youtube.com/embed/${videoId}?start=${section.start}&end=${section.end}`}
               title={`YouTube video player - Section ${index + 1}`}
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen
@@ -84,7 +86,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h3>Generate shorts for your youtube video</h3>
+        <h3>
+          Generate shorts for your youtube video (still in development...)
+        </h3>
         <form onSubmit={onSubmit}>
           <input
             type='text'
@@ -100,8 +104,8 @@ export default function Home() {
           video.
         </p>
         <p className={styles.info}>
-          The generated videos are not in a shorts format, they are just clips
-          with the start to end selected.
+          The generated videos are currently still not converted to a shorts
+          format, they are just clips with the start to end selected.
         </p>
         <div className={styles.result}>{JSON.stringify(result)}</div>
         {isLoading && (
@@ -113,7 +117,7 @@ export default function Home() {
           </div>
         )}
 
-        {sections && <VideoClips sections={sections} />}
+        {sections && <VideoClips videoId={videoId} sections={sections} />}
       </main>
     </div>
   )

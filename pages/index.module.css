@@ -47,6 +47,7 @@
   border-radius: 4px;
   margin-bottom: 24px;
   outline-color: #10a37f;
+  width: 400px;
 }
 .main ::placeholder {
   color: #8e8ea0;
