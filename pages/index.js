@@ -90,14 +90,16 @@ export default function Home() {
           Generate shorts for your youtube video (still in development...)
         </h3>
         <form onSubmit={onSubmit}>
+          <label htmlFor='videoLink'>Enter a YouTube video link</label>
           <input
+            id='videoLink'
             type='text'
             name='videoLink'
             placeholder='Enter a YouTube video link'
             value={videoLinkInput}
             onChange={(e) => setVideoLinkInput(e.target.value)}
           />
-          <input type='submit' value='Search transcript' />
+          <input type='submit' value='Generate shorts' />
         </form>
         <p className={styles.info}>
           Note: Temporarily, this will work only on the first 2-3 minutes of the
